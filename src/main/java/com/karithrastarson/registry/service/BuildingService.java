@@ -25,4 +25,13 @@ public class BuildingService {
         buildingRepository.save(newBuilding);
         return newBuilding;
     }
+
+    public Building getBuildingById(String buildingId) {
+        try {
+            long id = Long.parseLong(buildingId);
+            return buildingRepository.findById(id).orElse(null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

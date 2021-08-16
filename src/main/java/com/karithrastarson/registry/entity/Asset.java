@@ -22,4 +22,17 @@ public class Asset {
     @ManyToOne
     @JoinColumn(name = "architectId")
     private Architect architect;
+
+    public Asset(String name, String url) {
+        this.name = name;
+        this.url = url;
+    }
+
+    public void setBuilding(Building building) {
+        this.building = building;
+    }
+
+    public void setArchitect(Architect architect) {
+        this.architect = architect;
+    }
 }

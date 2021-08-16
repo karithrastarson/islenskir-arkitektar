@@ -1,7 +1,7 @@
 package com.karithrastarson.registry.repository;
 
-import com.karithrastarson.registry.entity.Architect;
+import com.karithrastarson.registry.entity.Asset;
 import org.springframework.data.repository.CrudRepository;
 
-public interface AssetRepository extends CrudRepository<Architect, Long> {
+public interface AssetRepository extends CrudRepository<Asset, Long> {
 }

@@ -26,9 +26,11 @@ public class ArchitectService {
     }
 
     public Architect getArchitectById(String architectId) {
-        if (architectId == null || architectId.isEmpty()) {
+        try {
+            long id = Long.parseLong(architectId);
+            return architectRepository.findById(id).orElse(null);
+        } catch (Exception e) {
             return null;
         }
-        return architectRepository.findById(Long.parseLong(architectId)).orElse(null);
     }
 }
