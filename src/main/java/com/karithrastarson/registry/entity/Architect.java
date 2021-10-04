@@ -38,4 +38,24 @@ public class Architect {
     public List<Asset> getAssets() {
         return assets;
     }
+
+    public long getArchitectId() {
+        return architectId;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public List<Building> getBuildings() {
+        return buildings;
+    }
 }

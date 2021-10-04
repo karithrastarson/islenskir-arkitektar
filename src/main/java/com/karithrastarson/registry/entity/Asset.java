@@ -1,6 +1,8 @@
 package com.karithrastarson.registry.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Asset {
@@ -23,6 +25,10 @@ public class Asset {
     @JoinColumn(name = "architectId")
     private Architect architect;
 
+    public Asset() {
+        //Empty constructor for Spring
+    }
+
     public Asset(String name, String url) {
         this.name = name;
         this.url = url;
@@ -38,5 +44,31 @@ public class Asset {
 
     public String getUrl() {
         return url;
+    }
+
+    public long getAssetId() {
+        return assetId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public String getBuilding() {
+       if (building == null) {
+           return "";
+       }
+       return building.toString();
+    }
+
+    public String getArchitect() {
+        if (architect == null) {
+            return "";
+        }
+        return architect.toString();
     }
 }

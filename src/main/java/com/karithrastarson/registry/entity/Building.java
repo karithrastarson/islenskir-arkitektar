@@ -30,4 +30,27 @@ public class Building {
         this.architect = architect;
         this.createdDate = createdDate;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getArchitect() {
+        if (architect == null) {
+            return "";
+        }
+        return architect.toString();
+    }
+
+    public List<Asset> getAssets() {
+        return assets;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
 }
