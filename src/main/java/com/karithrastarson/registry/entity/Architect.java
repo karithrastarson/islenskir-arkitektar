@@ -34,4 +34,8 @@ public class Architect {
     public Long getId() {
         return architectId;
     }
+
+    public List<Asset> getAssets() {
+        return assets;
+    }
 }

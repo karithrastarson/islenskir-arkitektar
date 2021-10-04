@@ -35,4 +35,8 @@ public class Asset {
     public void setArchitect(Architect architect) {
         this.architect = architect;
     }
+
+    public String getUrl() {
+        return url;
+    }
 }
