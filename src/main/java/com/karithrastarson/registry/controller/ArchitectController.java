@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -44,7 +43,7 @@ public class ArchitectController {
     @Tag(name = "Architect")
     @GetMapping(path = "/{id}")
     public @ResponseBody
-    ResponseEntity<Architect> getArchitectById(@PathVariable("id") String id) {
+    ResponseEntity<Architect> getArchitectById(@PathVariable("id") Long id) {
         Architect architect = architectService.getArchitectById(id);
         if (architect == null) {
             return new ResponseEntity("Architect with id " + id + " not found", HttpStatus.NOT_FOUND);
@@ -60,7 +59,7 @@ public class ArchitectController {
     @Tag(name = "Architect")
     @GetMapping(path = "/{id}/assets")
     public @ResponseBody
-    ResponseEntity<List<String>> getArchitectAssets(@PathVariable("id") String id) {
+    ResponseEntity<List<String>> getArchitectAssets(@PathVariable("id") Long id) {
         List<String> assetLinks = architectService.getArchitectAssets(id);
         if (assetLinks.isEmpty()) {
             return new ResponseEntity("No assets found for architect with id " + id, HttpStatus.NOT_FOUND);

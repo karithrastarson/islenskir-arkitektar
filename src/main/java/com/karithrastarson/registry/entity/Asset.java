@@ -1,6 +1,9 @@
 package com.karithrastarson.registry.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +20,9 @@ public class Asset {
 
     private String thumbnailUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "buildingId")
-    private Building building;
+    private Long buildingId;
 
-    @ManyToOne
-    @JoinColumn(name = "architectId")
-    private Architect architect;
+    private List<Long> architects;
 
     public Asset() {
         //Empty constructor for Spring
@@ -34,12 +33,19 @@ public class Asset {
         this.url = url;
     }
 
-    public void setBuilding(Building building) {
-        this.building = building;
+    public void setBuilding(Long buildingId) {
+        this.buildingId = buildingId;
     }
 
-    public void setArchitect(Architect architect) {
-        this.architect = architect;
+    public void addArchitect(Long architectId) {
+        if (architects == null) {
+            architects = new ArrayList<>();
+        }
+        architects.add(architectId);
+    }
+
+    public void setArchitects(List<Long> architects) {
+        this.architects = architects;
     }
 
     public String getUrl() {
@@ -58,17 +64,11 @@ public class Asset {
         return thumbnailUrl;
     }
 
-    public String getBuilding() {
-       if (building == null) {
-           return "";
-       }
-       return building.toString();
+    public Long getBuilding() {
+       return buildingId;
     }
 
-    public String getArchitect() {
-        if (architect == null) {
-            return "";
-        }
-        return architect.toString();
+    public List<Long> getArchitects() {
+        return architects;
     }
 }
