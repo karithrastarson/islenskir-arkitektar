@@ -1,5 +1,6 @@
 package com.karithrastarson.registry.controller;
 
+import com.karithrastarson.registry.entity.Building;
 import com.karithrastarson.registry.exception.DuplicateException;
 import com.karithrastarson.registry.service.ArchitectService;
 import com.karithrastarson.registry.service.BuildingService;
@@ -29,11 +30,11 @@ public class BuildingController {
     public @ResponseBody
     ResponseEntity<String> addBuilding(@RequestBody BuildingItem newBuilding) {
         try {
-            buildingService.addBuilding(newBuilding.getAddress(), newBuilding.getArchitectId(), newBuilding.getCreatedDate());
+            Building building = buildingService.addBuilding(newBuilding.getAddress(), newBuilding.getArchitectId(), newBuilding.getCreatedDate());
+            return new ResponseEntity<>("Building added with ID: " + building.getId() , HttpStatus.OK);
         } catch (DuplicateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<>("Building added", HttpStatus.OK);
     }
 
     private static class BuildingItem {

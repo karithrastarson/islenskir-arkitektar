@@ -57,4 +57,11 @@ public class Building {
     public String getCreatedDate() {
         return createdDate;
     }
+
+    public void addAsset(long assetId) {
+        if (assets == null) {
+            assets = new ArrayList<>();
+        }
+        assets.add(assetId);
+    }
 }

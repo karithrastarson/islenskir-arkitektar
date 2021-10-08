@@ -12,7 +12,7 @@ public class Asset {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long assetId;
+    private long id;
 
     private String name;
 
@@ -33,6 +33,10 @@ public class Asset {
         this.url = url;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public void setBuilding(Long buildingId) {
         this.buildingId = buildingId;
     }
@@ -50,10 +54,6 @@ public class Asset {
 
     public String getUrl() {
         return url;
-    }
-
-    public long getAssetId() {
-        return assetId;
     }
 
     public String getName() {

@@ -33,4 +33,12 @@ public class BuildingService {
             return null;
         }
     }
+
+    public void addAsset(Long buildingId, Long assetId) {
+        Building building = buildingRepository.findById(buildingId).orElse(null);
+        if (building != null) {
+            building.addAsset(assetId);
+            buildingRepository.save(building);
+        }
+    }
 }
