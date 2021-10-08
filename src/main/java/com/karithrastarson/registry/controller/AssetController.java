@@ -27,8 +27,8 @@ public class AssetController {
     public @ResponseBody
     ResponseEntity<String> uploadAsset(@RequestParam("file") MultipartFile file,
                                        @RequestParam("filename") String filename,
-                                       @RequestParam("architectId") Long architectId,
-                                       @RequestParam("buildingId") Long buildingId) {
+                                       @RequestParam("architectId") String architectId,
+                                       @RequestParam("buildingId") String buildingId) {
         try {
             Asset asset = assetService.uploadAsset(filename, file, buildingId, architectId);
             return new ResponseEntity<>("Asset added to cloud", HttpStatus.OK);

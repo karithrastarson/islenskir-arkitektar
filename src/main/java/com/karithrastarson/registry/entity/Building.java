@@ -1,10 +1,6 @@
 package com.karithrastarson.registry.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.ArrayList;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -16,9 +12,12 @@ public class Building {
 
     private String address;
 
-    private List<Long> architects;
+    @ManyToOne
+    @JoinColumn(name = "architectId")
+    private Architect architect;
 
-    private List<Long> assets;
+    @OneToMany(mappedBy = "building")
+    private List<Asset> assets;
 
     private String createdDate;
 
@@ -26,12 +25,9 @@ public class Building {
         //Empty constructor for Spring
     }
 
-    public Building(String address, long architectId, String createdDate) {
+    public Building(String address, Architect architect, String createdDate) {
         this.address = address;
-
-        this.architects = new ArrayList<>();
-        architects.add(architectId);
-
+        this.architect = architect;
         this.createdDate = createdDate;
     }
 
@@ -43,14 +39,14 @@ public class Building {
         return address;
     }
 
-    public List<Long> getArchitects() {
-        if (architects == null) {
-            return new ArrayList<>();
+    public String getArchitect() {
+        if (architect == null) {
+            return "";
         }
-        return architects;
+        return architect.toString();
     }
 
-    public List<Long> getAssets() {
+    public List<Asset> getAssets() {
         return assets;
     }
 

@@ -1,12 +1,15 @@
 package com.karithrastarson.registry.service;
 
 import com.karithrastarson.registry.entity.Architect;
+import com.karithrastarson.registry.entity.Asset;
 import com.karithrastarson.registry.exception.DuplicateException;
 import com.karithrastarson.registry.repository.ArchitectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArchitectService {
@@ -25,8 +28,9 @@ public class ArchitectService {
         return newArch;
     }
 
-    public Architect getArchitectById(Long id) {
+    public Architect getArchitectById(String architectId) {
         try {
+            long id = Long.parseLong(architectId);
             return architectRepository.findById(id).orElse(null);
         } catch (Exception e) {
             return null;
@@ -39,8 +43,20 @@ public class ArchitectService {
      * @param id The id of the architect
      * @return A list of links to assets
      */
-    public List<String> getArchitectAssets(Long id) {
-       //TODO:IMPLEMENT
-        return null;
+    public List<String> getArchitectAssets(String id) {
+        Optional<Architect> result = architectRepository.findById(Long.parseLong(id));
+        if (!result.isPresent()) {
+            return new ArrayList<String>();
+        }
+        Architect architect = result.get();
+        List<Asset> assets = architect.getAssets();
+        if (assets == null || assets.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<String> links = new ArrayList<>();
+        for (Asset asset : assets) {
+            links.add(asset.getUrl());
+        }
+        return links;
     }
 }

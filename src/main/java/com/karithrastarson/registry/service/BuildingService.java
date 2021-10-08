@@ -1,5 +1,6 @@
 package com.karithrastarson.registry.service;
 
+import com.karithrastarson.registry.entity.Architect;
 import com.karithrastarson.registry.entity.Building;
 import com.karithrastarson.registry.exception.DuplicateException;
 import com.karithrastarson.registry.repository.BuildingRepository;
@@ -13,14 +14,14 @@ public class BuildingService {
     @Autowired
     BuildingRepository buildingRepository;
 
-    public Building addBuilding(String address, Long architectId, String createdDate) throws DuplicateException {
+    public Building addBuilding(String address, Architect architect, String createdDate) throws DuplicateException {
         //Check if this entry already exists (same address)
         Optional<Building> optional = buildingRepository.findByAddress(address);
         if (optional.isPresent()) {
             throw new DuplicateException(address);
         }
 
-        Building newBuilding = new Building(address, architectId, createdDate);
+        Building newBuilding = new Building(address, architect, createdDate);
         buildingRepository.save(newBuilding);
         return newBuilding;
     }

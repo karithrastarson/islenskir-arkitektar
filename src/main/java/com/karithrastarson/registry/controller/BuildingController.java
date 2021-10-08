@@ -1,5 +1,6 @@
 package com.karithrastarson.registry.controller;
 
+import com.karithrastarson.registry.entity.Architect;
 import com.karithrastarson.registry.exception.DuplicateException;
 import com.karithrastarson.registry.service.ArchitectService;
 import com.karithrastarson.registry.service.BuildingService;
@@ -29,7 +30,8 @@ public class BuildingController {
     public @ResponseBody
     ResponseEntity<String> addBuilding(@RequestBody BuildingItem newBuilding) {
         try {
-            buildingService.addBuilding(newBuilding.getAddress(), newBuilding.getArchitectId(), newBuilding.getCreatedDate());
+            Architect architect = architectService.getArchitectById(newBuilding.getArchitectId());
+            buildingService.addBuilding(newBuilding.getAddress(), architect, newBuilding.getCreatedDate());
         } catch (DuplicateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
@@ -39,15 +41,15 @@ public class BuildingController {
     private static class BuildingItem {
         private String address;
         private String createdDate;
-        private Long architectId;
+        private String architectId;
 
-        public BuildingItem(String address, String createdDate, Long architectId) {
+        public BuildingItem(String address, String createdDate, String architectId) {
             this.address = address;
             this.createdDate = createdDate;
             this.architectId = architectId;
         }
 
-        public Long getArchitectId() {
+        public String getArchitectId() {
             return architectId;
         }
 
