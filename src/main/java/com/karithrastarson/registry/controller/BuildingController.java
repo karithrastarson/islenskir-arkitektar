@@ -1,6 +1,7 @@
 package com.karithrastarson.registry.controller;
 
 import com.karithrastarson.registry.entity.Architect;
+import com.karithrastarson.registry.entity.Building;
 import com.karithrastarson.registry.exception.DuplicateException;
 import com.karithrastarson.registry.service.ArchitectService;
 import com.karithrastarson.registry.service.BuildingService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping(path = "/building")
@@ -31,11 +33,11 @@ public class BuildingController {
     ResponseEntity<String> addBuilding(@RequestBody BuildingItem newBuilding) {
         try {
             Architect architect = architectService.getArchitectById(newBuilding.getArchitectId());
-            buildingService.addBuilding(newBuilding.getAddress(), architect, newBuilding.getCreatedDate());
+            Building building = buildingService.addBuilding(newBuilding.getAddress(), architect, newBuilding.getCreatedDate());
+            return new ResponseEntity<>("Building added with id" + building.getId(), HttpStatus.OK);
         } catch (DuplicateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<>("Building added", HttpStatus.OK);
     }
 
     private static class BuildingItem {
