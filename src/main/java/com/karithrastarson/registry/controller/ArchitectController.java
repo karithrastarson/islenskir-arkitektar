@@ -29,7 +29,7 @@ public class ArchitectController {
     ResponseEntity<String> addArchitect(@RequestBody ArchitectItem newArch) {
         try {
             Architect architect = architectService.addArchitect(newArch.getName(), newArch.getUni(), newArch.getDob());
-            return new ResponseEntity<>("Architect added with ID: " + architect.getId(), HttpStatus.OK);
+            return new ResponseEntity<>("Architect added with ID " + architect.getId(), HttpStatus.OK);
         } catch (DuplicateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }

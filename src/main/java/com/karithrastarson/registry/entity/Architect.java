@@ -1,14 +1,13 @@
 package com.karithrastarson.registry.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Architect {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long architectId;
 
     private String fullName;
 
@@ -16,9 +15,11 @@ public class Architect {
 
     private String university;
 
-    private List<Long> buildings;
+    @OneToMany(mappedBy = "architect")
+    private List<Building> buildings;
 
-    private List<Long> assets;
+    @OneToMany(mappedBy = "architect")
+    private List<Asset> assets;
 
     public Architect() {
         //Empty constructor for Spring
@@ -30,12 +31,16 @@ public class Architect {
         this.university = university;
     }
 
-    public List<Long> getAssets() {
+    public Long getId() {
+        return architectId;
+    }
+
+    public List<Asset> getAssets() {
         return assets;
     }
 
-    public long getId() {
-        return id;
+    public long getArchitectId() {
+        return architectId;
     }
 
     public String getFullName() {
@@ -50,15 +55,7 @@ public class Architect {
         return university;
     }
 
-    public List<Long> getBuildings() {
+    public List<Building> getBuildings() {
         return buildings;
-    }
-
-    public void addAsset(long assetId) {
-        if (assets == null) {
-            assets = new ArrayList<>();
-        }
-
-        assets.add(assetId);
     }
 }

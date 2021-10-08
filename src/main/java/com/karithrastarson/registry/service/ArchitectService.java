@@ -43,13 +43,4 @@ public class ArchitectService {
        //TODO:IMPLEMENT
         return null;
     }
-
-    public void addAsset(Long architectId, long assetId) {
-        Architect architect = architectRepository.findById(architectId).orElse(null);
-        if (architect != null) {
-            architect.addAsset(assetId);
-            architectRepository.save(architect);
-        }
-
-    }
 }

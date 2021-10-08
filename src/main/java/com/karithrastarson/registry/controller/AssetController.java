@@ -31,7 +31,7 @@ public class AssetController {
                                        @RequestParam("buildingId") Long buildingId) {
         try {
             Asset asset = assetService.uploadAsset(filename, file, buildingId, architectId);
-            return new ResponseEntity<>("Asset added to cloud with ID: " + asset.getId(), HttpStatus.OK);
+            return new ResponseEntity<>("Asset added to cloud", HttpStatus.OK);
         } catch (UploadException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
