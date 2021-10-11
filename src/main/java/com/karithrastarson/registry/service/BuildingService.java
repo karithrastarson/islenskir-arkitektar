@@ -3,6 +3,7 @@ package com.karithrastarson.registry.service;
 import com.karithrastarson.registry.entity.Architect;
 import com.karithrastarson.registry.entity.Building;
 import com.karithrastarson.registry.exception.DuplicateException;
+import com.karithrastarson.registry.exception.NoItemFoundException;
 import com.karithrastarson.registry.repository.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,12 @@ public class BuildingService {
         return newBuilding;
     }
 
-    public Building getBuildingById(String buildingId) {
-        try {
-            long id = Long.parseLong(buildingId);
-            return buildingRepository.findById(id).orElse(null);
-        } catch (Exception e) {
-            return null;
+    public Building getBuildingById(String buildingId) throws NoItemFoundException {
+        long id = Long.parseLong(buildingId);
+        Optional<Building> building = buildingRepository.findById(id);
+        if (!building.isPresent()) {
+            throw new NoItemFoundException(buildingId);
         }
+        return building.get();
     }
 }

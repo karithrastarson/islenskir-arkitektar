@@ -2,6 +2,7 @@ package com.karithrastarson.registry.controller;
 
 import com.karithrastarson.registry.entity.Architect;
 import com.karithrastarson.registry.exception.DuplicateException;
+import com.karithrastarson.registry.exception.NoItemFoundException;
 import com.karithrastarson.registry.service.ArchitectService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class ArchitectController {
     ResponseEntity<String> addArchitect(@RequestBody ArchitectItem newArch) {
         try {
             Architect architect = architectService.addArchitect(newArch.getName(), newArch.getUni(), newArch.getDob());
-            return new ResponseEntity<>("Architect added with ID " + architect.getId(), HttpStatus.OK);
+            return new ResponseEntity<>("Architect added with ID " + architect.getId(), HttpStatus.CREATED);
         } catch (DuplicateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
@@ -45,11 +46,13 @@ public class ArchitectController {
     @GetMapping(path = "/{id}")
     public @ResponseBody
     ResponseEntity<Architect> getArchitectById(@PathVariable("id") String id) {
-        Architect architect = architectService.getArchitectById(id);
-        if (architect == null) {
-            return new ResponseEntity("Architect with id " + id + " not found", HttpStatus.NOT_FOUND);
+        try {
+            Architect architect = architectService.getArchitectById(id);
+            return new ResponseEntity<>(architect, HttpStatus.OK);
+        } catch (NoItemFoundException e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(architect, HttpStatus.OK);
+
     }
 
     /**

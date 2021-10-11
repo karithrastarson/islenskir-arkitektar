@@ -58,4 +58,9 @@ public class Architect {
     public List<Building> getBuildings() {
         return buildings;
     }
+
+    @Override
+    public String toString() {
+        return fullName;
+    }
 }

@@ -4,6 +4,7 @@ import com.karithrastarson.registry.entity.Architect;
 import com.karithrastarson.registry.entity.Asset;
 import com.karithrastarson.registry.entity.Building;
 import com.karithrastarson.registry.exception.DuplicateException;
+import com.karithrastarson.registry.exception.NoItemFoundException;
 import com.karithrastarson.registry.exception.UploadException;
 import com.karithrastarson.registry.repository.AssetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class AssetService {
     @Autowired
     ArchitectService architectService;
 
-    public Asset uploadAsset(String name, MultipartFile file, String buildingId, String architectId) throws UploadException {
+    public Asset uploadAsset(String name, MultipartFile file, String buildingId, String architectId) throws UploadException, NoItemFoundException {
         try {
             minioService.uploadFile(name, file.getBytes());
             String url = minioService.defaultBaseFolder + "/" + file.getOriginalFilename();

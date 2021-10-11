@@ -3,6 +3,7 @@ package com.karithrastarson.registry.service;
 import com.karithrastarson.registry.entity.Architect;
 import com.karithrastarson.registry.entity.Asset;
 import com.karithrastarson.registry.exception.DuplicateException;
+import com.karithrastarson.registry.exception.NoItemFoundException;
 import com.karithrastarson.registry.repository.ArchitectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,18 +24,18 @@ public class ArchitectService {
             throw new DuplicateException(name);
         }
 
-        Architect newArch = new Architect(name, uni, dob);
+        Architect newArch = new Architect(name, dob, uni);
         architectRepository.save(newArch);
         return newArch;
     }
 
-    public Architect getArchitectById(String architectId) {
-        try {
-            long id = Long.parseLong(architectId);
-            return architectRepository.findById(id).orElse(null);
-        } catch (Exception e) {
-            return null;
+    public Architect getArchitectById(String architectId) throws NoItemFoundException {
+        long id = Long.parseLong(architectId);
+        Optional<Architect> architect = architectRepository.findById(id);
+        if (!architect.isPresent()) {
+            throw new NoItemFoundException(architectId);
         }
+        return architect.get();
     }
 
     /**

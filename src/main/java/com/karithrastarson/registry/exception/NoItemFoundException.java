@@ -1,16 +1,14 @@
 package com.karithrastarson.registry.exception;
 
 public class NoItemFoundException extends Exception {
-    private String message;
 
-    public NoItemFoundException(String message) {
-        super(message);
-        this.message = message;
+    public NoItemFoundException(String itemId) {
+        super("Item with ID " + itemId + " not found");
     }
 
     @Override
     public String getMessage() {
-        return message;
+        return super.getMessage();
     }
 
 }

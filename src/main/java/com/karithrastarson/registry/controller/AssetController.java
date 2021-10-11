@@ -1,6 +1,7 @@
 package com.karithrastarson.registry.controller;
 
 import com.karithrastarson.registry.entity.Asset;
+import com.karithrastarson.registry.exception.NoItemFoundException;
 import com.karithrastarson.registry.exception.UploadException;
 import com.karithrastarson.registry.service.AssetService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,9 +32,11 @@ public class AssetController {
                                        @RequestParam("buildingId") String buildingId) {
         try {
             Asset asset = assetService.uploadAsset(filename, file, buildingId, architectId);
-            return new ResponseEntity<>("Asset added to cloud", HttpStatus.OK);
+            return new ResponseEntity<>("Asset added to cloud with URL " + asset.getUrl(), HttpStatus.CREATED);
         } catch (UploadException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (NoItemFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 }
