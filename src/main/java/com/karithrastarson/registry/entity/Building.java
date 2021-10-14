@@ -53,4 +53,9 @@ public class Building {
     public String getCreatedDate() {
         return createdDate;
     }
+
+    @Override
+    public String toString() {
+        return address;
+    }
 }

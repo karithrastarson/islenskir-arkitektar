@@ -10,5 +10,4 @@ public class NoItemFoundException extends Exception {
     public String getMessage() {
         return super.getMessage();
     }
-
 }

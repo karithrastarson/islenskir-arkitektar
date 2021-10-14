@@ -71,7 +71,7 @@ public class ArchitectController {
         return new ResponseEntity<>(assetLinks, HttpStatus.OK);
     }
 
-    private static class ArchitectItem {
+    public static class ArchitectItem {
         private String name;
         private String dob;
         private String uni;
