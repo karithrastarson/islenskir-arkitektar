@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.kari-thrastarson</groupId>
 	<artifactId>islenskir-arkitektar</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>Íslenskir Arkitektar</name>
 	<description>List of Icelandic architects and their work</description>
 
@@ -74,5 +74,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

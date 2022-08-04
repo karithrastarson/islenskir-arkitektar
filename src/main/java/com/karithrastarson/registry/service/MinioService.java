@@ -31,19 +31,17 @@ public class MinioService {
 
     }
 
-
     public void uploadFile(String name, byte[] content) {
         File file = new File("/tmp/" + name);
         file.canWrite();
         file.canRead();
         try {
-            FileOutputStream iofs = new FileOutputStream(file);
-            iofs.write(content);
+            FileOutputStream stream = new FileOutputStream(file);
+            stream.write(content);
             minioClient.putObject(defaultBucketName, defaultBaseFolder + name, file.getAbsolutePath());
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-
     }
 
     public byte[] getFile(String key) {

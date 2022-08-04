@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/asset")
 public class AssetController {
@@ -26,17 +28,15 @@ public class AssetController {
     @Tag(name = "Asset")
     @PostMapping(path = "")
     public @ResponseBody
-    ResponseEntity<String> uploadAsset(@RequestParam("file") MultipartFile file,
-                                       @RequestParam("filename") String filename,
-                                       @RequestParam("architectId") String architectId,
+    ResponseEntity<List<Asset>> uploadAsset(@RequestParam("files") MultipartFile[] files,
                                        @RequestParam("buildingId") String buildingId) {
         try {
-            Asset asset = assetService.uploadAsset(filename, file, buildingId, architectId);
-            return new ResponseEntity<>("Asset added to cloud with URL " + asset.getUrl(), HttpStatus.CREATED);
+            List<Asset> assets = assetService.uploadAssets(files, buildingId);
+            return new ResponseEntity<>(assets, HttpStatus.CREATED);
         } catch (UploadException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity(e.getMessage(), HttpStatus.CONFLICT);
         } catch (NoItemFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 }

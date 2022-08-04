@@ -1,12 +1,13 @@
 package com.karithrastarson.registry.entity;
 
 import javax.persistence.*;
+import java.text.AttributedCharacterIterator;
 import java.util.List;
 
 @Entity
 public class Architect {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long architectId;
 
     private String fullName;
@@ -18,9 +19,6 @@ public class Architect {
     @OneToMany(mappedBy = "architect")
     private List<Building> buildings;
 
-    @OneToMany(mappedBy = "architect")
-    private List<Asset> assets;
-
     public Architect() {
         //Empty constructor for Spring
     }
@@ -31,12 +29,14 @@ public class Architect {
         this.university = university;
     }
 
-    public Long getId() {
-        return architectId;
+    public Architect(String name, String dob) {
+        this.fullName = name;
+        this.dob = dob;
+        this.university = null;
     }
 
-    public List<Asset> getAssets() {
-        return assets;
+    public Long getId() {
+        return architectId;
     }
 
     public long getArchitectId() {
@@ -62,5 +62,16 @@ public class Architect {
     @Override
     public String toString() {
         return fullName;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Architect comparison = (Architect) obj;
+        return comparison.fullName.equals(this.fullName)
+                && comparison.dob.equals(this.dob);
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
     }
 }

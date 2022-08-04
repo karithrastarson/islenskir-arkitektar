@@ -1,6 +1,7 @@
 package com.karithrastarson.registry.controller;
 
 import com.karithrastarson.registry.entity.Architect;
+import com.karithrastarson.registry.exception.BadRequestException;
 import com.karithrastarson.registry.exception.DuplicateException;
 import com.karithrastarson.registry.exception.NoItemFoundException;
 import com.karithrastarson.registry.service.ArchitectService;
@@ -34,6 +35,8 @@ public class ArchitectController {
             return new ResponseEntity<>("Architect added with ID " + architect.getId(), HttpStatus.CREATED);
         } catch (DuplicateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (BadRequestException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -52,23 +55,40 @@ public class ArchitectController {
         } catch (NoItemFoundException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-
     }
 
     /**
-     * Endpoint: Get assets related to an architect
+     * Endpoint: Update architect by ID
      *
-     * @return List of assets
+     * @return Architect
      */
     @Tag(name = "Architect")
-    @GetMapping(path = "/{id}/assets")
+    @PutMapping(path = "/{id}")
     public @ResponseBody
-    ResponseEntity<List<String>> getArchitectAssets(@PathVariable("id") String id) {
-        List<String> assetLinks = architectService.getArchitectAssets(id);
-        if (assetLinks.isEmpty()) {
-            return new ResponseEntity("No assets found for architect with id " + id, HttpStatus.NOT_FOUND);
+    ResponseEntity<Architect> updateArchitectInfo(@PathVariable("id") String id, @RequestBody ArchitectUpdatedInfo info ) {
+        try {
+            Architect architect = architectService.updateArchitectInfo(id, info.profilePhoto, info.uni);
+            return new ResponseEntity<>(architect, HttpStatus.OK);
+        } catch (NoItemFoundException e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(assetLinks, HttpStatus.OK);
+    }
+
+    /**
+     * Endpoint: Delete architect by ID
+     *
+     * @return Architect
+     */
+    @Tag(name = "Architect")
+    @DeleteMapping(path = "/{id}")
+    public @ResponseBody
+    ResponseEntity<String> removeArchitectById(@PathVariable("id") String id ) {
+        try {
+            architectService.removeArchitectInfo(id);
+            return new ResponseEntity<>("Success", HttpStatus.OK);
+        } catch (NoItemFoundException e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     public static class ArchitectItem {
@@ -93,6 +113,22 @@ public class ArchitectController {
         public String getUni() {
             return uni;
         }
+    }
+    public static class ArchitectUpdatedInfo {
+        private String uni;
+        private Long profilePhoto;
 
+        public ArchitectUpdatedInfo(String uni, Long profilePhoto) {
+            this.uni = uni;
+            this.profilePhoto = profilePhoto;
+        }
+
+        public String getUni() {
+            return uni;
+        }
+
+        public Long getProfilePhoto() {
+            return profilePhoto;
+        }
     }
 }

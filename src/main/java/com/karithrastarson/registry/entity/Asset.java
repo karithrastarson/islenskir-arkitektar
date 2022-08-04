@@ -8,7 +8,7 @@ import java.util.List;
 public class Asset {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long assetId;
 
     private String name;
@@ -21,10 +21,6 @@ public class Asset {
     @JoinColumn(name = "buildingId")
     private Building building;
 
-    @ManyToOne
-    @JoinColumn(name = "architectId")
-    private Architect architect;
-
     public Asset() {
         //Empty constructor for Spring
     }
@@ -36,10 +32,6 @@ public class Asset {
 
     public void setBuilding(Building building) {
         this.building = building;
-    }
-
-    public void setArchitect(Architect architect) {
-        this.architect = architect;
     }
 
     public String getUrl() {
@@ -65,10 +57,4 @@ public class Asset {
        return building.toString();
     }
 
-    public String getArchitect() {
-        if (architect == null) {
-            return "";
-        }
-        return architect.toString();
-    }
 }

@@ -2,27 +2,25 @@ package com.karithrastarson.registry.service;
 
 import com.karithrastarson.registry.entity.Architect;
 import com.karithrastarson.registry.entity.Asset;
+import com.karithrastarson.registry.exception.BadRequestException;
 import com.karithrastarson.registry.exception.DuplicateException;
 import com.karithrastarson.registry.exception.NoItemFoundException;
 import com.karithrastarson.registry.repository.ArchitectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import static com.karithrastarson.registry.utils.Validation.validateArchitect;
 
 @Service
 public class ArchitectService {
     @Autowired
     ArchitectRepository architectRepository;
 
-    public Architect addArchitect(String name, String uni, String dob) throws DuplicateException {
+    public Architect addArchitect(String name, String uni, String dob) throws DuplicateException, BadRequestException {
+        validateArchitect(name, uni, dob, architectRepository);
         //Check if this entry already exists (same name and dob)
-        List<Architect> results = architectRepository.findByFullNameAndDob(name, dob);
-        if (!results.isEmpty()) {
-            throw new DuplicateException(name);
-        }
 
         Architect newArch = new Architect(name, dob, uni);
         architectRepository.save(newArch);
@@ -39,25 +37,33 @@ public class ArchitectService {
     }
 
     /**
-     * Fetch all assets linked to an architect
+    * Search architect, based on string input
+    *
+    * @param searchString the string to search for
      *
-     * @param id The id of the architect
-     * @return A list of links to assets
-     */
-    public List<String> getArchitectAssets(String id) {
-        Optional<Architect> result = architectRepository.findById(Long.parseLong(id));
-        if (!result.isPresent()) {
-            return new ArrayList<String>();
+     * @return A list of architects matching the search string in some form
+    * */
+    public List<Architect> searchArchitect(String searchString, int page, int size) {
+        List<Architect> results = architectRepository.findByFullNameContainingIgnoreCase(searchString);
+        List<Architect> schoolResults = architectRepository.findByUniversityContainingIgnoreCase(searchString);
+        if (schoolResults != null && !schoolResults.isEmpty()){
+            results.addAll(schoolResults);
         }
-        Architect architect = result.get();
-        List<Asset> assets = architect.getAssets();
-        if (assets == null || assets.isEmpty()) {
-            return new ArrayList<>();
+        return results;
+    }
+
+    public Architect updateArchitectInfo(String architectId, Long profilePhoto, String uni) throws NoItemFoundException {
+        Architect architect = getArchitectById(architectId);
+
+        if (uni != null) {
+            architect.setUniversity(uni);
         }
-        List<String> links = new ArrayList<>();
-        for (Asset asset : assets) {
-            links.add(asset.getUrl());
-        }
-        return links;
+        architectRepository.save(architect);
+        return architect;
+    }
+
+    public void removeArchitectInfo(String id) throws NoItemFoundException {
+        Architect architect = getArchitectById(id);
+        architectRepository.delete(architect);
     }
 }

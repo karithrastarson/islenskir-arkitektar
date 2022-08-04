@@ -32,13 +32,31 @@ public class BuildingController {
     public @ResponseBody
     ResponseEntity<String> addBuilding(@RequestBody BuildingItem newBuilding) {
         try {
-            Architect architect = architectService.getArchitectById(newBuilding.getArchitectId());
-            Building building = buildingService.addBuilding(newBuilding.getAddress(), architect, newBuilding.getCreatedDate());
-            return new ResponseEntity<>("Building added with id " + building.getId(), HttpStatus.CREATED);
+            Building building = buildingService.addBuilding(newBuilding.getAddress(), newBuilding.getPostalCode(), newBuilding.getName(), newBuilding.getArchitectId(), newBuilding.getCreatedDate());
+            return new ResponseEntity<>("Building added: " + building.getAddress(), HttpStatus.CREATED);
         } catch (DuplicateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        } catch (NoItemFoundException e) {
+        }
+        catch (NoItemFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Endpoint: Update building information
+     * Used to link and unlink architect as well
+     *
+     * @return Building information
+     */
+    @Tag(name = "Building")
+    @PutMapping(path = "/{id}")
+    public @ResponseBody
+    ResponseEntity<Building> updateBuildingById(@PathVariable("id") String id, @RequestBody BuildingItem updatedBuilding ) {
+        try {
+            Building building = buildingService.updateBuildingById(id, updatedBuilding.getName(), updatedBuilding.getArchitectId());
+            return new ResponseEntity<>(building, HttpStatus.OK);
+        } catch (NoItemFoundException e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -61,25 +79,34 @@ public class BuildingController {
 
     private static class BuildingItem {
         private String address;
-        private String createdDate;
+        private int postalCode;
+        private String name;
         private String architectId;
+        private String createdDate;
 
-        public BuildingItem(String address, String createdDate, String architectId) {
+        public BuildingItem(String address, int postalCode, String name, String architectId, String createdDate) {
             this.address = address;
-            this.createdDate = createdDate;
+            this.postalCode = postalCode;
+            this.name = name;
             this.architectId = architectId;
+            this.createdDate = createdDate;
         }
-
-        public String getArchitectId() {
-            return architectId;
-        }
-
         public String getAddress() {
             return address;
+        }
+        public int getPostalCode() {
+            return postalCode;
         }
 
         public String getCreatedDate() {
             return createdDate;
+        }
+
+        public String getName() {
+            return name;
+        }
+        public String getArchitectId() {
+            return architectId;
         }
     }
 }
