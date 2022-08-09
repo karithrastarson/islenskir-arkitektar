@@ -27,6 +27,7 @@ public class ArchitectController {
      * @return Confirmation message
      */
     @Tag(name = "Architect")
+    @CrossOrigin(origins = "*")
     @PostMapping(path = "")
     public @ResponseBody
     ResponseEntity<String> addArchitect(@RequestBody ArchitectItem newArch) {
@@ -46,6 +47,7 @@ public class ArchitectController {
      * @return Architect
      */
     @Tag(name = "Architect")
+    @CrossOrigin(origins = "*")
     @GetMapping(path = "/{id}")
     public @ResponseBody
     ResponseEntity<Architect> getArchitectById(@PathVariable("id") String id) {
@@ -63,6 +65,7 @@ public class ArchitectController {
      * @return Architect
      */
     @Tag(name = "Architect")
+    @CrossOrigin(origins = "*")
     @PutMapping(path = "/{id}")
     public @ResponseBody
     ResponseEntity<Architect> updateArchitectInfo(@PathVariable("id") String id, @RequestBody ArchitectUpdatedInfo info ) {
@@ -80,6 +83,7 @@ public class ArchitectController {
      * @return Architect
      */
     @Tag(name = "Architect")
+    @CrossOrigin(origins = "*")
     @DeleteMapping(path = "/{id}")
     public @ResponseBody
     ResponseEntity<String> removeArchitectById(@PathVariable("id") String id ) {

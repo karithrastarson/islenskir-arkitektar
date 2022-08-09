@@ -28,6 +28,7 @@ public class SearchController {
      * @return List of architect results or empty list
      */
     @Tag(name = "Search")
+    @CrossOrigin(origins = "*")
     @PostMapping(path = "/architect")
     public @ResponseBody
     ResponseEntity<List<Architect>> searchArchitect(@RequestBody String searchString, @RequestParam int page, @RequestParam int size) {
@@ -44,6 +45,7 @@ public class SearchController {
      * @return List of building results or empty list
      */
     @Tag(name = "Search")
+    @CrossOrigin(origins = "*")
     @PostMapping(path = "/building")
     public @ResponseBody
     ResponseEntity<List<Building>> searchBuilding(@RequestBody String searchString) {

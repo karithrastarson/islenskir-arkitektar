@@ -17,6 +17,8 @@ import java.util.List;
 @RequestMapping(path = "/asset")
 public class AssetController {
 
+    //access AKIAS3U2YTOQP4IIX5GI
+    // secret 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
     @Autowired
     AssetService assetService;
 
@@ -25,11 +27,12 @@ public class AssetController {
      *
      * @return Confirmation message
      */
+    @CrossOrigin(origins = "*")
     @Tag(name = "Asset")
     @PostMapping(path = "")
     public @ResponseBody
     ResponseEntity<List<Asset>> uploadAsset(@RequestParam("files") MultipartFile[] files,
-                                       @RequestParam("buildingId") String buildingId) {
+                                            @RequestParam("buildingId") String buildingId) {
         try {
             List<Asset> assets = assetService.uploadAssets(files, buildingId);
             return new ResponseEntity<>(assets, HttpStatus.CREATED);

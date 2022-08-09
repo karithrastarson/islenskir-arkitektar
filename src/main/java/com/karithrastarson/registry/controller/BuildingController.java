@@ -28,6 +28,7 @@ public class BuildingController {
      * @return Confirmation message
      */
     @Tag(name = "Building")
+    @CrossOrigin(origins = "*")
     @PostMapping(path = "")
     public @ResponseBody
     ResponseEntity<String> addBuilding(@RequestBody BuildingItem newBuilding) {
@@ -48,6 +49,7 @@ public class BuildingController {
      *
      * @return Building information
      */
+    @CrossOrigin(origins = "*")
     @Tag(name = "Building")
     @PutMapping(path = "/{id}")
     public @ResponseBody
@@ -66,6 +68,7 @@ public class BuildingController {
      * @return Building information
      */
     @Tag(name = "Building")
+    @CrossOrigin(origins = "*")
     @GetMapping(path = "/{id}")
     public @ResponseBody
     ResponseEntity<Building> getBuildingById(@PathVariable("id") String id) {
